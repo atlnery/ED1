@@ -2,7 +2,7 @@
 #include<string.h>
 
 void processo(int dia, int mes, int ano);
-void saida(char *a, char *month, int ano);
+void saida(int dia, int mes, char *a, char *month, int ano);
 
 void processo(int dia, int mes, int ano){
   char a[20], month[15];
@@ -52,14 +52,13 @@ void processo(int dia, int mes, int ano){
     else if (mes == 11){strcpy(month, "Novembro");}
     else if (mes == 12){strcpy(month, "Dezembro");}
 
-    printf("%s de %s de %d\n",a, month, ano);
-
-    saida(&a, &month, ano);
+    saida(dia, mes, &a, &month, ano);
 }
 
-void saida(char *a, char *month, int ano){
-  printf("%s de %s de %d\n", &*a, &*month, ano);
+void saida(int dia, int mes, char *a, char *month, int ano){
+  printf("%d/%d/%d : %s de %s de %d\n", dia, mes, ano, &*a, &*month, ano);
 }
+
 
 
 int main(){
