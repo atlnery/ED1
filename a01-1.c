@@ -1,24 +1,22 @@
 #include<stdio.h>
-#include<math.h>
 
-int entrada();
 int processamento();
-int saida();
 
-int entrada(){
-  int x = 3;
-  processamento(x);
-}
-
-int processamento(int x){
-  x = pow(x, 2);
-  saida(x);
-}
-
-int saida(int x){
-  printf("%d\n",x);
+int processamento(int x, int y){
+  if (y == 0){
+    return 1;
+  }
+  else{
+    int i = 1, new = x;
+    while(i < y){
+      new *= x;
+      i++;
+    }
+  return new;
+  }
 }
 
 int main(){
-  entrada();
+  printf("3 elevado a 2 = %d\n", processamento(-3,2));
 }
+
