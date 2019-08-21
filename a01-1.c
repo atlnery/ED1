@@ -17,6 +17,6 @@ int processamento(int x, int y){
 }
 
 int main(){
-  printf("3 elevado a 2 = %d\n", processamento(-3,2));
+  printf("-3 elevado a 2 = %d\n", processamento(-3,2));
 }
 
