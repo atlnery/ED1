@@ -3,13 +3,15 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-int modificavetor(int *vetor, int tam);
-  vetor = (int*) malloc(tam);
-  
+void modificavetor(int* vetor, int tam);
+
+void modificavetor(int* vetor, int tam){
+  for (int i = 0; i < tam; i++){
+    *(vetor+i) += 1;
+  }
 }
 
 int main(){
   int v[4] = {6, 7, 8, 9};
   modificavetor(v, 4);
-  printf("%d, %d, %d, %d\n", v[0], v[1], v[2], v[3]);
 }
