@@ -9,6 +9,8 @@ int* preenche_aleatorio(int tam);
 int main(){
   int* v1 = preenche_aleatorio(1);
   int* v2 = preenche_aleatorio(100);
+  free(v1);
+  free(v2);
 }
 
 int* preenche_aleatorio(int tam){
