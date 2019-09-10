@@ -100,8 +100,10 @@ void matriz_imprime(Matriz *m)
   printf("IMPRESSÃO DA MATRIZ\n");
   int lin = (*m).linhas;
   int col = (*m).colunas;
-  for (int i = 0; i < lin; i++){
-    for(int j = 0; j < col; j++){
+  for (int i = 0; i < lin; i++)
+  {
+    for(int j = 0; j < col; j++)
+    {
       printf("%d\t", *((m->m[i])+j));
     }
     printf("\n");
@@ -132,7 +134,8 @@ Matriz* matriz_multiplica(Matriz* a, Matriz* b)
 
 int matriz_ehQuadrada(Matriz* m)
 {
-  if((*m).linhas == (*m).colunas){
+  if((*m).linhas == (*m).colunas)
+  {
     return 1;
   }
   else{
@@ -188,10 +191,12 @@ int matriz_ehIdentidade(Matriz* m)
         }
       }
     }
-    if(cont == m->linhas){
+    if(cont == m->linhas)
+    {
       return 1;
     }
-    else{
+    else
+    {
       return 0;
     }
   }
@@ -226,7 +231,8 @@ Matriz* matriz_oposta(Matriz* m)
 int* obter_vetorlinha(Matriz *m, int linha)
 {
   int* v = (int*)calloc(m->linhas, sizeof(int));
-  for(int i = 0; i < m->linhas; i++){
+  for(int i = 0; i < m->linhas; i++)
+  {
     v[i] = *((m->m[linha])+i);
   }
   return v;
@@ -235,7 +241,8 @@ int* obter_vetorlinha(Matriz *m, int linha)
 int* obter_vetorcoluna(Matriz *m, int coluna)
 {
   int* v = (int*)calloc(m->colunas, sizeof(int));
-  for(int i = 0; i < m->colunas; i++){
+  for(int i = 0; i < m->colunas; i++)
+  {
     v[i] = *((m->m[i])+coluna);
   }
   return v;
