@@ -9,9 +9,9 @@ int main()
   // criar matriz
   // int m[2][2]
 
-    Matriz *m1 = matriz_cria(4, 3); //feito pelo professor
+    Matriz *m1 = matriz_cria(4, 4); //feito pelo professor
     Matriz *m2 = matriz_cria(10, 10);
-    Matriz *m3 = matriz_cria(2, 2);
+    Matriz *m3 = matriz_cria(3, 2);
 
 
     // atribui valores nas celulas
@@ -23,7 +23,6 @@ int main()
     matriz_atribui(m3, 0, 1, 50);
     matriz_atribui(m3, 1, 1, 3);
 
-
     // acessar valores das celulas
     // int x = m[1][2]*/
     int x1 = matriz_acessa1(m1, 0, 1);
@@ -32,9 +31,6 @@ int main()
 
     int x2;
     matriz_acessa2(m1, 0, 1, &x2); //done
-
-    //multiplicação de matrizes
-    Matriz* produto = matriz_multiplica(m3, m1);
 
     int x3 = matriz_ehQuadrada(m1);
 
@@ -51,10 +47,13 @@ int main()
     int req = matriz_colunas(m1);
     int req1 = matriz_linhas(m1);
 
-    Matriz *copia = matriz_oposta(m1);
+    Matriz* copia = matriz_oposta(m1);
 
     int *v = obter_vetorlinha(m3, 0);
     int *v2 = obter_vetorcoluna(m3, 0);
+
+    //multiplicação de matrizes
+    Matriz* produto = matriz_multiplica(m3, m1);
 
     //imprimir a matriz
     matriz_imprime(m1); //done
@@ -62,6 +61,8 @@ int main()
     matriz_imprime(m3);
     matriz_imprime(t1);
     matriz_imprime(copia);
+    matriz_imprime(produto);
+
 
   //destruir matriz
     matriz_destroi(m1);

@@ -94,16 +94,13 @@ int matriz_linhas(Matriz* m)
   return m->colunas;
 }
 
-
 void matriz_imprime(Matriz *m)
 {
   printf("IMPRESSÃO DA MATRIZ\n");
   int lin = (*m).linhas;
   int col = (*m).colunas;
-  for (int i = 0; i < lin; i++)
-  {
-    for(int j = 0; j < col; j++)
-    {
+  for (int i = 0; i < lin; i++){
+    for(int j = 0; j < col; j++){
       printf("%d\t", *((m->m[i])+j));
     }
     printf("\n");
@@ -113,29 +110,28 @@ void matriz_imprime(Matriz *m)
 
 Matriz* matriz_multiplica(Matriz* a, Matriz* b)
 {
-  if ((*a).colunas == b->linhas)
-  {
+  if ((*a).colunas != b->linhas){
+    return NULL;
+  }
+  else{
     Matriz *c = matriz_cria(a->linhas, b->colunas);
-    for (int i = 0; i < (*c).linhas; i++)
+    for (int i = 0; i < (*a).linhas; i++)
     {
-      for(int j = 0; j < (*c).colunas; j++)
+      for(int j = 0; j < (*b).colunas; j++)
       {
-      int k = 0;
-      *((c->m[i])+j) = *((a->m[i])+k) * *((b->m[k])+j) + *((a->m[i])+k+1) * *((b->m[k+1])+j);
+        for(int k=0; k < (*a).colunas; k++)
+        {
+          *((c->m[i])+j) += *((a->m[i])+k) * *((b->m[k])+j);
+        }
       }
     }
     return c;
-  }
-  else
-  {
-    return NULL;
   }
 }
 
 int matriz_ehQuadrada(Matriz* m)
 {
-  if((*m).linhas == (*m).colunas)
-  {
+  if((*m).linhas == (*m).colunas){
     return 1;
   }
   else{
@@ -191,12 +187,10 @@ int matriz_ehIdentidade(Matriz* m)
         }
       }
     }
-    if(cont == m->linhas)
-    {
+    if(cont == m->linhas){
       return 1;
     }
-    else
-    {
+    else{
       return 0;
     }
   }
@@ -222,7 +216,7 @@ Matriz* matriz_oposta(Matriz* m)
   {
     for(int j = 0; j < m->colunas; j++)
     {
-    *((copy->m[i])+j) =   (-1) * *((m->m[j])+i);
+    *((copy->m[i])+j) =   (-1) * *((m->m[i])+j);
     }
   }
   return copy;
@@ -231,8 +225,7 @@ Matriz* matriz_oposta(Matriz* m)
 int* obter_vetorlinha(Matriz *m, int linha)
 {
   int* v = (int*)calloc(m->linhas, sizeof(int));
-  for(int i = 0; i < m->linhas; i++)
-  {
+  for(int i = 0; i < m->linhas; i++){
     v[i] = *((m->m[linha])+i);
   }
   return v;
@@ -241,8 +234,7 @@ int* obter_vetorlinha(Matriz *m, int linha)
 int* obter_vetorcoluna(Matriz *m, int coluna)
 {
   int* v = (int*)calloc(m->colunas, sizeof(int));
-  for(int i = 0; i < m->colunas; i++)
-  {
+  for(int i = 0; i < m->colunas; i++){
     v[i] = *((m->m[i])+coluna);
   }
   return v;
