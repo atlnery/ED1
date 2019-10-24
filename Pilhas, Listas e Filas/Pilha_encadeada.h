@@ -17,7 +17,7 @@ typedef struct no{
  * Estrutura usada para representar e armazenar a PILHA com alocação encadeada.
  */
 typedef struct{
-    No* topo;
+     No* topo;
     int qtd;
 }Pilha;
 
@@ -25,13 +25,14 @@ Pilha* pilha_criar(); //cria a pilha inicial
 Boolean pilha_push(Pilha* p, Tipo elemento); //insere elemento no topo da pilha
 Tipo* pilha_pop1(Pilha* p); //remove elemento e devolve o valor removido
 Boolean pilha_pop2(Pilha* p, Tipo* end); //remove e grava na variável o valor removido
-void pilha_destruir(Pilha* p);
+void pilha_destruir(Pilha* p); //chama a destruição dos nós e destroi a pilha;
+void destruir_no(ptr no); //destrói os nós
 void pilha_imprimir(Pilha* p); //imprime a pilha
 int pilha_posicao(Pilha* p, Tipo elemento);//mostra a posição em que se encontra determinado elemento
 int pilha_tamanho(Pilha* p);//qtd de elementos na pilha;
 //FUNÇÕES ADICIONAIS
 int pilha_pushAll(Pilha* p, Tipo* vetor, int tam);
-void pilha_inverter(Pilha* p);
+Pilha* pilha_inverter(Pilha* p);
 Pilha* pilha_clone(Pilha* p);
 
 
@@ -46,29 +47,25 @@ Pilha* pilha_criar(){
   return Nova;
 }
 
+
+/*
+RECURSIVIDADE - destrói o ultimo nó e vai destruindo os demais
+*/
+void destruir_no(ptr no){
+  if(no == NULL) return;
+    destruir_no(no->prox);
+    free(no);
+}
+
 /**
  * Desaloca a pilha <p>.
  */
 void pilha_destruir(Pilha* p){
-  if (p->topo == NULL){
-    free(p->topo);
-    free(p->qtd);
-    free(p);
-  }
-  else{
-    ptr aux; // para receber os ponteiros de struct
-    for (int i = p->qtd; i > 0; i--){
-      aux = p->topo; // a cada iteração de i ele começa do topo
-      if (i == 1) // nessa condição é o topo
-      for(int j = i; j > 0; j--){ //percorrer da base ao topo
-        aux = aux->prox;
-        if (j == 3){
-          p->qtd--;
-        }
-      }
-    }
-  }
+  if (p == NULL) return;
+  destruir_no(p->topo);
+  free(p);
 }
+
 
 /**
  * Insere o elemento <elemento> no topo da pilha <p>.
@@ -148,8 +145,8 @@ void pilha_imprimir(Pilha* p){
         printf("%d ",proximo->dado);
         proximo = proximo->prox;
       }
-  }
     printf(" ]\n");
+  }
 }
 
 /**
@@ -196,13 +193,32 @@ int pilha_tamanho(Pilha* p){
  * @param tam: tamanho do <vetor>
  * @return quantidade de elementos inseridos na pilha <p>
  */
-int pilha_pushAll(Pilha* p, Tipo* vetor, int tam);
+int pilha_pushAll(Pilha* p, Tipo* vetor, int tam){
+  if (p == NULL || p->topo == NULL){
+    return 0;
+  }
+  else{
+    int i;
+    for (i = 0; i < tam; i++){
+      pilha_push(p, vetor[i]);
+    }
+    return i++;
+  }
+}
 
 /**
  * Inverte a pilha <p>
  * @param p: Endereço da Pilha.
  */
-void pilha_inverter(Pilha* p);
+Pilha* pilha_inverter(Pilha* p){
+  Pilha* invertida = pilha_criar();
+  ptr aux = p->topo;
+  while(aux != NULL){
+    pilha_push(invertida, aux->dado);
+    aux = aux->prox;
+  }
+  return invertida;
+}
 
 /**
  * Cria um clone da pilha <p>
@@ -210,12 +226,8 @@ void pilha_inverter(Pilha* p);
  * @return Endereço da pilha clonada.
  */
 Pilha* pilha_clone(Pilha* p){
-  Pilha* clone = pilha_criar;
-  ptr aux = p->topo;
-  while(aux != NULL){
-    printf("%d\n",aux->dado);
-    pilha_push(clone, aux->dado);
-    aux = aux->prox;
-  }
+  Pilha* clone = pilha_criar();
+  clone = pilha_inverter(p);
+  clone = pilha_inverter(clone);
   return clone;
 }

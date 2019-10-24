@@ -139,7 +139,6 @@ int pilha_pushAll(Pilha* p, Tipo* vetor, int tam){
     p->qtd++;
     j++;
   }
-
 }
 
 void pilha_destruir(Pilha* p){
