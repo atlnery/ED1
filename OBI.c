@@ -51,22 +51,22 @@ char verifica_cadeia(char* c){
 int main(){
   char A[100001];
   int T;
-  printf("Valor de instâncias: ");
   scanf("%d",&T);
 
   if(T > 20 || T < 1){
-    printf("Instância inválida\n");
     return 0;
   }
 
-  int i = 0;
-  char saida;
+  else{
+    int i = 0;
+    char saida;
 
-  while(i < T){
-    printf("Insira os símbolos: ");
-    scanf(" %[^\n]", A);
-    saida = verifica_cadeia(A);
-    printf("SAIDA %c\n",saida);
-    i++;
+    while(i < T){
+      scanf(" %[^\n]", A);
+      saida = verifica_cadeia(A);
+      printf("%c\n",saida);
+      i++;
+    }
   }
+
 }
