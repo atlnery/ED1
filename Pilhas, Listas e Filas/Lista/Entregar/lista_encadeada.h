@@ -52,6 +52,7 @@ Lista* lista_criar(){
 Boolean lista_inserir(Lista* l, Tipo elemento, int posicao){
 
   if (l == NULL)return false;
+    
   else if (posicao > l->qtd) return false;
 
   else if(posicao == l->qtd){
