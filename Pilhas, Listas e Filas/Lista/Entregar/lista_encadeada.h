@@ -1,12 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
 typedef enum boolean{false=0, true=1} Boolean;
 typedef int Tipo;
 typedef struct no* ptr;
-
 
 typedef struct no{
     Tipo dado;
@@ -41,6 +38,7 @@ void lista_imprimir(Lista* l); //imprime valores da lista;
 
 No* criar_no(Tipo elemento, ptr ant, ptr prox); //cria os nós que fazem parte da lista
 void busca_no(Lista* l, int posicao, ptr* anterior, ptr* prox); //busca posição específica
+
 
 Lista* lista_criar(){
 
@@ -125,44 +123,36 @@ int* lista_remover1(Lista* l, int posicao){
   if(l->first == NULL) return NULL;
   if (l->qtd == 0)return NULL;
 
-    ptr anterior;
-    ptr proximo;
-    int* valor;
+   ptr anterior;
+   ptr proximo;
+   int* valor;
 
-    if(posicao == (l->qtd-1) && posicao != 0){
-      valor = &l->last->dado;
-      l->last = l->last->ant;
-      l->last->prox = NULL;
-    }
+   if(posicao == (l->qtd-1) && posicao != 0){
+     valor = &l->last->dado;
+     l->last = l->last->ant;
+     l->last->prox = NULL;
+   }
 
     else if(posicao == 0){
-
-      valor = &l->first->dado;
-
-      if (l->qtd == 1){
-        l->first = NULL;
-      }
-
-      else{
-        l->first = l->first->prox;
-        l->first->ant = NULL;
-      }
+        valor = &l->first->dado;
+       
+        if (l->qtd == 1){l->first = NULL;}
+        else{
+            l->first = l->first->prox;
+            l->first->ant = NULL;
+        }
     }
 
-
     else{
-
       busca_no(l, posicao, &anterior, &proximo);
       valor = &anterior->prox->dado;
       anterior->prox = proximo->prox;
       proximo->prox->ant = proximo->ant;
-
     }
 
     l->qtd--;
-    if (l->qtd == 0){
-      l->last = l->first = NULL;
-    }
+    
+    if (l->qtd == 0){l->last = l->first = NULL;}
 
     return valor;
 }
@@ -171,9 +161,7 @@ Boolean lista_remover2(Lista* l, int posicao, Tipo* endereco){
 
     *endereco = *(lista_remover1(l, posicao));
 
-    if(*endereco == NULL){
-      return false;
-    }
+    if(*endereco == NULL){ return false; }
 
     return true;
 }
