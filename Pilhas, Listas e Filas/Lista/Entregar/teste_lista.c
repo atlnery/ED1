@@ -27,6 +27,7 @@ void teste(){
   valor = lista_remover1(lis,4);
   printf("Tamanho %d\n",verifica);
 
+
   lista_imprimir(lis);
 
   int valor2;
@@ -36,6 +37,24 @@ void teste(){
   lista_buscar(lis, 0, &valor);
   printf("%d\n",valor);
   lista_imprimir(lis);
+
+  int posicao = lista_posicao(lis, 5);
+  printf("%d\n", posicao);
+
+  Boolean tem = lista_contem(lis, 0);
+  printf("%i\n",tem);
+
+  tem = lista_remover_elemento(lis, 5);
+  printf("%i\n",tem);
+  tem = lista_remover_elemento(lis, 5);
+  tem = lista_remover_elemento(lis, 4);
+  //tem = lista_remover_elemento(lis, 2);
+
+  lista_destruir(lis);
+
+  lista_imprimir(lis);
+
+  printf("%d\n",lis->qtd);
 
 }
 
