@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+
 typedef enum boolean{false=0, true=1} Boolean;
 typedef int Tipo;
 typedef struct no* ptr;
+
 
 typedef struct no{
     Tipo dado;
@@ -20,6 +23,7 @@ typedef struct{
 
 Lista* lista_criar(); //cria lista
 void lista_destruir(Lista* l);
+void destroi_no(ptr no);
 
 Boolean lista_inserir(Lista* l, Tipo elemento, int posicao); //função principal de inserção
 Boolean lista_inserir_fim(Lista* l, Tipo elemento); //insere os elementos no final da fila
@@ -30,8 +34,8 @@ Boolean lista_remover2(Lista* l, int posicao, Tipo* endereco); //remove o elemen
 Boolean lista_remover_elemento(Lista* l, Tipo elemento);
 
 Boolean lista_buscar(Lista* l, int posicao, int* endereco); //busca posição e guarda elemento correspondente em endereco;
-Boolean lista_contem(Lista* l, Tipo elemento);
-int lista_posicao(Lista* l, Tipo elemento);
+Boolean lista_contem(Lista* l, Tipo elemento); //retorna se o elemento está na lista
+int lista_posicao(Lista* l, Tipo elemento); //retorna a posição do elemento, se ele existir na lista.
 
 int lista_tamanho(Lista* l); //retorna qtd de elementos na lista;
 void lista_imprimir(Lista* l); //imprime valores da lista;
@@ -52,7 +56,6 @@ Lista* lista_criar(){
 Boolean lista_inserir(Lista* l, Tipo elemento, int posicao){
 
   if (l == NULL)return false;
-    
   else if (posicao > l->qtd) return false;
 
   else if(posicao == l->qtd){
@@ -124,36 +127,44 @@ int* lista_remover1(Lista* l, int posicao){
   if(l->first == NULL) return NULL;
   if (l->qtd == 0)return NULL;
 
-   ptr anterior;
-   ptr proximo;
-   int* valor;
+    ptr anterior;
+    ptr proximo;
+    int* valor;
 
-   if(posicao == (l->qtd-1) && posicao != 0){
-     valor = &l->last->dado;
-     l->last = l->last->ant;
-     l->last->prox = NULL;
-   }
-
-    else if(posicao == 0){
-        valor = &l->first->dado;
-       
-        if (l->qtd == 1){l->first = NULL;}
-        else{
-            l->first = l->first->prox;
-            l->first->ant = NULL;
-        }
+    if(posicao == (l->qtd-1) && posicao != 0){
+      valor = &l->last->dado;
+      l->last = l->last->ant;
+      l->last->prox = NULL;
     }
 
+    else if(posicao == 0){
+
+      valor = &l->first->dado;
+
+      if (l->qtd == 1){
+        l->first = NULL;
+      }
+
+      else{
+        l->first = l->first->prox;
+        l->first->ant = NULL;
+      }
+    }
+
+
     else{
+
       busca_no(l, posicao, &anterior, &proximo);
       valor = &anterior->prox->dado;
       anterior->prox = proximo->prox;
       proximo->prox->ant = proximo->ant;
+
     }
 
     l->qtd--;
-    
-    if (l->qtd == 0){l->last = l->first = NULL;}
+    if (l->qtd == 0){
+      l->last = l->first = NULL;
+    }
 
     return valor;
 }
@@ -162,15 +173,23 @@ Boolean lista_remover2(Lista* l, int posicao, Tipo* endereco){
 
     *endereco = *(lista_remover1(l, posicao));
 
-    if(*endereco == NULL){ return false; }
+    if(*endereco == NULL){
+      return false;
+    }
 
     return true;
 }
 
 Boolean lista_remover_elemento(Lista* l, Tipo elemento){
+  int x = lista_posicao(l, elemento);
 
+  if(x == -1) return false;
+
+  else{
+    lista_remover1(l, x);
+  }
+  return true;
 }
-
 
 No* criar_no(Tipo elemento, ptr ant, ptr prox){
 
@@ -240,9 +259,48 @@ void lista_imprimir(Lista* l){
   printf("]\n");
 }
 
+Boolean lista_contem(Lista* l, Tipo elemento){
+  int x = lista_posicao(l, elemento);
 
+  if (x == -1) { return false; }
+
+  else{ return true; }
+}
+
+int lista_posicao(Lista* l, Tipo elemento){
+  if (l->qtd == 0) return -1;
+
+  ptr aux = l->first;
+
+  for (int i = 0; i < l->qtd; i++){
+    if(aux->dado == elemento){
+      return i;
+    }
+    aux = aux->prox;
+  }
+
+  return -1;
+}
+
+
+void destroi_no(ptr no){
+  ptr aux = no;
+  while(aux != NULL){
+    no = aux;
+    aux = no->ant;
+    free(no);
+  }
+  free(aux);
+}
 //destroi pilha
 void lista_destruir(Lista* l){
   //precisa destruir os nós (terceiriza) com recursão
-  free(l);
+  if (l->qtd == 0) return;
+
+  else
+    destroi_no(l->last);
+    free(l->qtd);
+    free(l->first);
+    free(l->last);
+    free(l);
 }
