@@ -1,0 +1,1 @@
+Matriz com uso de sentinela. Elementos nulos da matriz não são alocados
