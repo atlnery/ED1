@@ -26,8 +26,9 @@ typedef struct no* ptr;
 Matriz* matriz_criar(int qtd_linhas, int qtd_colunas);
 int matriz_atribuir(Matriz* m, int linha, int coluna, int valor);
 int matriz_acessar(Matriz* m, int linha, int coluna);
-void matriz_imprimir(Matriz* m);
+int matriz_imprimir(Matriz* m);
 void matriz_desalocar(Matriz* m);
+void desaloca_no(ptr aux);
 
 //AUXILIARES
 No* cria_sentinela();
@@ -36,7 +37,6 @@ No* criar(int linha, int coluna, int valor, ptr acima, ptr esquerda);
 int busca_acima(Matriz* m, int coluna, int linha, ptr* acima);
 int busca_esquerda(Matriz* m, int linha, int coluna, ptr* esquerda);
 
-//Cria uma matriz vazia e devolve seu endereço de memória.
 Matriz* matriz_criar(int qtd_linhas, int qtd_colunas){
   if(qtd_linhas < 0 || qtd_colunas < 0) return NULL;
 
@@ -60,7 +60,7 @@ Matriz* matriz_criar(int qtd_linhas, int qtd_colunas){
     matriz->colunas[i] = sentinela;
   }
   return matriz;
-}
+} //Cria uma matriz vazia e devolve seu endereço de memória.
 
 No* cria_sentinela(){
   No* sentinela = (No*)malloc(sizeof(No));
@@ -69,9 +69,8 @@ No* cria_sentinela(){
   sentinela->up = sentinela->down = sentinela;
 
   return sentinela;
-}
+} //Insere o <valor> na matriz <m> na linha <linha> e coluna <coluna>. Caso a posição já exista, substitua o valor da célula.
 
-//Insere o <valor> na matriz <m> na linha <linha> e coluna <coluna>. Caso a posição já exista, substitua o valor da célula.
 int matriz_atribuir(Matriz* m, int linha, int coluna, int valor){
   if(linha  > (m->nlin)) {return -1;}
   if(coluna > (m->ncol)) {return -1;}
@@ -149,33 +148,53 @@ No* criar(int linha, int coluna, int valor, ptr acima, ptr esquerda){
 
   return no;
 }
-//Devolve o valor correspondente a linha e coluna solicitada. Faça a validação dos índices. Caso a posição solicitada esteja fora do intervalo, devolva zero.
+
 int matriz_acessar(Matriz* m, int linha, int coluna){
   if(linha  > (m->nlin)) {return 0;}
   if(coluna > (m->ncol)) {return 0;}
 
-}
+  ptr aux = m->linhas[linha]->prox;
+  for(int i = 0; i < m->ncol; i++){
+    if(aux->coluna == coluna){
+      return aux->valor;
+    }
+    aux= aux->prox;
+  }
+  return 0;
+}//Devolve o valor correspondente a linha e coluna solicitada. Faça a validação dos índices. Caso a posição solicitada esteja fora do intervalo, devolva zero.
 
-
-//Imprime os valores da matriz na tela. Cada linha deve ser impressa em uma linha diferente e os elementos separados por espaço ou tabulação. Os elementos não representados na matriz (valor zero), também devem ser impressos.
-void matriz_imprimir(Matriz* m){
-  if(m == NULL) printf("MATRIZ VAZIA!\n");
+int matriz_imprimir(Matriz* m){
+  if(m == NULL) { printf("MATRIZ VAZIA!\n"); return 0;}
 
   else{
+    int x; printf("\n");
     for(int i = 0; i < m->nlin; i++){
-      ptr aux = m->linhas[i]->prox;
       for(int j = 0; j < m->ncol; j++){
-          printf("%d\t",aux->valor);
-          aux = aux->prox;
+          x = matriz_acessar(m,i,j);
+          printf("%d\t",x);
       }
       printf("\n");
     }
-    printf("\n");
+  }
+  printf("\n");
+}//Imprime os valores da matriz na tela. Cada linha deve ser impressa em uma linha diferente e os elementos separados por espaço ou tabulação. Os elementos não representados na matriz (valor zero), também devem ser impressos.
+
+void desaloca_no(ptr aux){
+  ptr aux1;
+  if(aux1 == NULL) return;
+  aux1 = aux;
+  desaloca_no(aux->ant);
+  free(aux1);
+}
+
+void matriz_desalocar(Matriz* m){
+  for(int i = 0; i < m->nlin; i++){
+    desaloca_no(m->linhas[i]->prox);
   }
 
-}
+  free(m->linhas);
+  free(m->colunas);
+  free(m);
 
-//Libera toda memória alocada dinamicamente para a matriz.
-void matriz_desalocar(Matriz* m){
-
-}
+  printf("\nMATRIZ DESALOCADA COM SUCESSO\n");
+}//Libera toda memória alocada dinamicamente para a matriz.
